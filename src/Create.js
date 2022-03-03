@@ -16,7 +16,7 @@ const Create = () => {
 
     useEffect(()=>{
 
-        fetch('http://localhost:8000/groups')
+        fetch('https://million-quest-api.herokuapp.com/groups')
         .then(res => res.json())
         .then(data => {
             setGroups(data.sort((a, b) => b.id - a.id))
@@ -30,7 +30,7 @@ const Create = () => {
     const handleSubmit = (e) =>{
         e.preventDefault()
         const group = {qzGroup}
-        fetch('http://localhost:8000/groups',{
+        fetch('https://million-quest-api.herokuapp.com/groups',{
             method:'POST',
             headers:{"Content-type":"application/json"},
             body: JSON.stringify(group)
@@ -42,7 +42,7 @@ const Create = () => {
 
     const handleDelete = (id) =>{
         console.log('delete clicked');
-        fetch('http://localhost:8000/groups/'+id,{
+        fetch('https://million-quest-api.herokuapp.com/groups/'+id,{
             method:'DELETE'
         }).then(()=>{
             setReload(!reload)

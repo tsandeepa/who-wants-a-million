@@ -68,7 +68,7 @@ const CreateQuiz = () => {
         if(answer){
             const questions = {qzTitle, a1, a2, a3, a4, gid, answer}
 
-            fetch('http://localhost:8000/questions/',{
+            fetch('https://million-quest-api.herokuapp.com/questions/',{
                 method:'POST',
                 headers:{"Content-type":"application/json"},
                 body: JSON.stringify(questions)
@@ -83,7 +83,7 @@ const CreateQuiz = () => {
     }
 
     useEffect(()=>{
-        fetch('http://localhost:8000/questions')
+        fetch('https://million-quest-api.herokuapp.com/questions')
         .then(res => res.json())
         .then(data => {
             // setQuestions(data.filter(qz => qz.gid == gid).sort((a, b) => b.id - a.id))
@@ -99,7 +99,7 @@ const CreateQuiz = () => {
 
     const handleDelete = (id) =>{
         console.log('delete clicked');
-        fetch('http://localhost:8000/questions/'+id,{
+        fetch('https://million-quest-api.herokuapp.com/questions/'+id,{
             method:'DELETE'
         }).then(()=>{
             setReload(!reload)
@@ -115,7 +115,7 @@ const CreateQuiz = () => {
         // console.log(e.target.parentNode);
         e.target.parentNode.parentNode.classList.add('q__edit')
         setEditSelected('q__edit')
-        fetch('http://localhost:8000/questions/'+id)
+        fetch('https://million-quest-api.herokuapp.com/questions/'+id)
         .then(res => res.json())
         .then(data =>{
             console.log(data.qzTitle);
@@ -148,7 +148,7 @@ const CreateQuiz = () => {
     const handleEdit =(id) => {
         if(answer){
             const questionsUpdate = {qzTitle, a1, a2, a3, a4, gid, answer}
-            fetch('http://localhost:8000/questions/'+id,{
+            fetch('https://million-quest-api.herokuapp.com/questions/'+id,{
                 method:'PUT',
                 headers:{"Content-type":"application/json"},
                 body: JSON.stringify(questionsUpdate)
@@ -173,7 +173,7 @@ const CreateQuiz = () => {
     }
 
     useEffect(()=>{
-        fetch('http://localhost:8000/groups')
+        fetch('https://million-quest-api.herokuapp.com/groups')
         .then(res => res.json())
         .then(data => {
             setGroup(data.filter(gp =>gp.id == gid)[0].qzGroup)

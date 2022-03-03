@@ -168,7 +168,7 @@ const StartQuiz = () => {
     }
     // const audio = new Audio('./audio/Final_answer_lock.mp3');
     useEffect(()=>{
-        fetch('http://localhost:8000/questions')
+        fetch('https://million-quest-api.herokuapp.com/questions')
         .then(res => res.json())
         .then(data => {
             const result = data.filter(one => one.gid === id);

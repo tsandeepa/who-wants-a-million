@@ -12,7 +12,7 @@ const Home = () => {
          
 
 
-        fetch('http://localhost:8000/groups')
+        fetch('https://million-quest-api.herokuapp.com/groups')
         .then(res => res.json())
         .then(data => {
             setQgroup(data.sort((a, b) => b.id - a.id))
