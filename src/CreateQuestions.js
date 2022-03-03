@@ -7,6 +7,7 @@ import { faPen, faCircleMinus } from '@fortawesome/free-solid-svg-icons'
 import { Draggable } from "react-beautiful-dnd";
 import { Droppable } from "react-beautiful-dnd";
 import { DragDropContext } from "react-beautiful-dnd";
+import { FaRegClock } from 'react-icons/fa';
 
 const ListVariants = {
     hidden:{
@@ -61,10 +62,13 @@ const CreateQuiz = () => {
     // const icoEdit = <FontAwesomeIcon icon={faPenCircle} />
 
     const [questionOrder, setQuestionOrder] = useState()
+    const [loading, setLoading] = useState(false)
+
 
 
     const handleSubmit = (e) =>{
         e.preventDefault()
+        setLoading(true)
         if(answer){
             const questions = {qzTitle, a1, a2, a3, a4, gid, answer}
 
@@ -75,14 +79,20 @@ const CreateQuiz = () => {
                 }).then(()=>{
                     setReload(true)
                     console.log("New question added");
+                    setLoading(false)
+
             })
         } else{
-            alert('Please select')
+            alert('Please select answer')
+            setLoading(false)
+
         }
         
     }
 
     useEffect(()=>{
+        setLoading(true)
+
         fetch('https://million-quest-api.herokuapp.com/questions')
         .then(res => res.json())
         .then(data => {
@@ -91,6 +101,7 @@ const CreateQuiz = () => {
             console.log(data.filter(qz => qz.gid == gid).sort((a, b) => b.id - a.id))
             // setShowAnswr(data)
             setReload(false)
+            setLoading(false)
 
         })
 
@@ -98,12 +109,16 @@ const CreateQuiz = () => {
 
 
     const handleDelete = (id) =>{
+        setLoading(true)
+
         console.log('delete clicked');
+
         fetch('https://million-quest-api.herokuapp.com/questions/'+id,{
             method:'DELETE'
         }).then(()=>{
             setReload(!reload)
             console.log("Deleted");
+            setLoading(false)
 
         })
 
@@ -147,6 +162,8 @@ const CreateQuiz = () => {
 
     const handleEdit =(id) => {
         if(answer){
+            setLoading(true)
+
             const questionsUpdate = {qzTitle, a1, a2, a3, a4, gid, answer}
             fetch('https://million-quest-api.herokuapp.com/questions/'+id,{
                 method:'PUT',
@@ -162,9 +179,13 @@ const CreateQuiz = () => {
                 setAnswer(null)
                 setReload(!reload)
                 setEditing('')
+                setLoading(false)
+
             })
         }else{
-            alert('Please')
+            alert('Please select answer')
+            setLoading(false)
+
         }
         
         
@@ -173,6 +194,8 @@ const CreateQuiz = () => {
     }
 
     useEffect(()=>{
+        setLoading(true)
+
         fetch('https://million-quest-api.herokuapp.com/groups')
         .then(res => res.json())
         .then(data => {
@@ -180,6 +203,8 @@ const CreateQuiz = () => {
             console.log(data.filter(gp =>gp.id == gid)[0].qzGroup);
             setReload(false)
             setEditing('')
+            setLoading(false)
+
         })
 
     },[])
@@ -217,6 +242,8 @@ const CreateQuiz = () => {
 
     return ( 
         <div className={`create-qz ${editig}`}>
+            {loading && <div className="loading"> <span> <FaRegClock /></span></div>}
+
             <h4 className="page-header">This is create qz</h4>
             <div className="qz-container">
                 <div className="qz-form">
@@ -325,7 +352,7 @@ const CreateQuiz = () => {
                 <div className="qz-view" >
 
                     <h4 className="gp-title">{group} </h4>
-
+                    
                     {
                         questions &&
                         <DragDropContext onDragEnd={onEnd}>

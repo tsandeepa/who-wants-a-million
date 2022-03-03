@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoffee, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FaRegClock } from 'react-icons/fa';
 
 
 
@@ -10,18 +11,21 @@ const Create = () => {
 
     const[ qzGroup, setQzGroup ] = useState('');
     const[ groups, setGroups ] = useState(null);
-    const[ reload, setReload] = useState(false)
+    const[ reload, setReload] = useState(false);
+    const [loading, setLoading] = useState(false)
+
 
     const element = <FontAwesomeIcon icon={faTrash} />
 
     useEffect(()=>{
-
+        setLoading(true)
         fetch('https://million-quest-api.herokuapp.com/groups')
         .then(res => res.json())
         .then(data => {
             setGroups(data.sort((a, b) => b.id - a.id))
             console.log(data)
             setReload(false)
+            setLoading(false)
 
         })
 
@@ -29,6 +33,8 @@ const Create = () => {
     
     const handleSubmit = (e) =>{
         e.preventDefault()
+        setLoading(true)
+
         const group = {qzGroup}
         fetch('https://million-quest-api.herokuapp.com/groups',{
             method:'POST',
@@ -37,16 +43,21 @@ const Create = () => {
             }).then(()=>{
                 setReload(true)
                 console.log("New Group added");
+                setLoading(false)
+
         })
     }
 
     const handleDelete = (id) =>{
         console.log('delete clicked');
+        setLoading(true)
+
         fetch('https://million-quest-api.herokuapp.com/groups/'+id,{
             method:'DELETE'
         }).then(()=>{
             setReload(!reload)
             console.log("Deleted");
+            setLoading(false)
 
         })
 
@@ -60,6 +71,8 @@ const Create = () => {
 
     return ( 
         <div className="gp-container">
+            {loading && <div className="loading"> <span> <FaRegClock /></span></div>}
+
             <h4 className="page-header">Create Question Group</h4>
 
             <br/>

@@ -470,6 +470,35 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
   }
+
+  .loading{
+    color: #fff;
+    font-size: 2rem;
+    position: fixed;
+    height: 100vh;
+    background: #0000002e;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    span{
+      display: inline-flex;
+      animation:spin 1s linear infinite;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+      @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(359deg);
+      }
+    }
+
 `;
  
 export default GlobalStyle;

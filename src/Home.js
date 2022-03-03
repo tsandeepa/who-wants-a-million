@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-
+import { FaRegClock } from 'react-icons/fa';
 
 const Home = () => {
 
  const [qgroup, setQgroup] = useState()
+ const [loading, setLoading] = useState(false)
 
 
     useEffect(()=>{
          
 
-
+        setLoading(true)
         fetch('https://million-quest-api.herokuapp.com/groups')
         .then(res => res.json())
         .then(data => {
             setQgroup(data.sort((a, b) => b.id - a.id))
             console.log(data)
+            setLoading(false)
         })
     },[])
 
@@ -27,6 +29,7 @@ const Home = () => {
     return ( 
         <>
             <motion.h2 animate={{fontSize:50}} className="page-header">Choose a Group to Start the Game</motion.h2>
+            {loading && <div className="loading"> <span> <FaRegClock /></span></div>}
             <div className="container-home">
                 {
                     qgroup &&
